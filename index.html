@@ -7,7 +7,7 @@
 <meta name="description" content="The Dissociate. Coming soon.">
 <meta property="og:title" content="The Dissociate">
 <meta property="og:description" content="Media does not trap us by force. It holds us with reward.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2313235E'/%3E%3Crect x='22' y='14' width='20' height='38' fill='%23FFF4E4'/%3E%3Cline x1='12' y1='56' x2='52' y2='8' stroke='%2313235E' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='10'%20fill='%2313235E'/%3E%3Ctext%20x='32'%20y='41'%20text-anchor='middle'%20font-family='Palatino%20Linotype,%20Palatino,%20Book%20Antiqua,%20Georgia,%20serif'%20font-weight='700'%20font-size='23'%20letter-spacing='0.5'%20fill='%23FFFFFF'%3EDMG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     --ink: #13235E;        /* logo navy */
     --night: #040C1F;      /* hero sky */
     --paper: #FBFBF9;
-    --frost: #BCD5FF;      /* glittery blue grass */
+    --sky-ink: #0E1D4A;    /* deep sky navy for text on the white land */
     --poppy: #E4683F;      /* coral blooms */
     --rose: #E7A6BE;
     --lilac: #C3A3D6;
@@ -26,6 +26,8 @@
     --serif: "Cormorant Garamond", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
     --sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
 
+    --door-base: 55%;
+    --door-x: 50%;
     --measure: 34rem;
     --gutter: clamp(1.25rem, 5vw, 4.5rem);
   }
@@ -97,18 +99,12 @@
     height: 100%;
   }
   .twinkle { animation: twinkle 4s ease-in-out infinite alternate; }
-  .glint { animation: glint 2s ease-in-out infinite alternate; filter: drop-shadow(0 0 2px rgba(220, 235, 255, 0.9)); }
-  @keyframes glint { 0% { opacity: 0.1; } 70% { opacity: 0.5; } 100% { opacity: 1; } }
   @keyframes twinkle { from { opacity: 0.25; } to { opacity: 1; } }
-  .sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 9s ease-in-out infinite alternate; }
-  .sway.b { animation-duration: 12s; animation-delay: -4s; }
-  .sway.c { animation-duration: 7s; animation-delay: -2s; }
-  @keyframes sway { from { transform: skewX(-2deg); } to { transform: skewX(3.5deg); } }
   .door {
-    --dh: clamp(140px, 22vh, 235px);
+    --dh: clamp(180px, 30vh, 320px);
     position: absolute;
-    left: 50%;
-    top: calc(58.6% - var(--dh) + 0.9vh + 4px); /* base sits slightly into the rock so there is no gap */
+    left: var(--door-x);
+    top: calc(var(--door-base) - var(--dh)); /* the door floats in the sky above the land */
     width: calc(var(--dh) * 0.48);
     height: var(--dh);
     transform: translateX(-50%);
@@ -119,23 +115,10 @@
       0 0 40px 8px rgba(255, 225, 190, 0.35),
       0 0 140px 30px rgba(255, 200, 150, 0.18);
   }
-  .door::after {
-    /* the open leaf, swung outward */
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 34%;
-    height: 100%;
-    background: linear-gradient(180deg, #C9CCD6, #8E93A6);
-    transform-origin: left center;
-    transform: skewY(-12deg);
-    opacity: 0.9;
-  }
   .spill {
     position: absolute;
-    left: 50%;
-    top: 58.6%;
+    left: var(--door-x);
+    top: 67.3%;
     width: clamp(140px, 22vw, 320px);
     height: 40px;
     transform: translate(-50%, -50%);
@@ -182,14 +165,15 @@
     line-height: 1.02;
     letter-spacing: -0.01em;
     max-width: 19ch;
-    text-shadow: 0 2px 30px rgba(4, 12, 31, 0.6);
+    color: var(--sky-ink);
+    text-shadow: 0 0 24px rgba(255, 255, 255, 0.8);
   }
   .cue {
     font-family: var(--serif);
     font-style: italic;
     font-size: 1rem;
     letter-spacing: 0.02em;
-    color: rgba(251, 251, 249, 0.9);
+    color: var(--sky-ink);
   }
   .legal {
     position: absolute;
@@ -203,14 +187,13 @@
     align-items: baseline;
     gap: 1rem;
     font-size: 0.8rem;
-    color: rgba(251, 251, 249, 0.75);
-    text-shadow: 0 1px 8px rgba(4, 12, 31, 0.9);
+    color: var(--sky-ink);
   }
   @media (max-width: 600px) {
     .hero-copy { bottom: calc(env(safe-area-inset-bottom, 0px) + 6rem); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sway, .motes span, .twinkle, .glint { animation: none !important; }
+    .motes span, .twinkle { animation: none !important; }
   }
 </style>
 </head>
@@ -226,25 +209,15 @@
     </svg>
     <svg class="land" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
       <defs>
-        <linearGradient id="farRock" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#9C6E8C"/><stop offset="1" stop-color="#4E3554"/>
-        </linearGradient>
-        <linearGradient id="midRock" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#D99A9F"/><stop offset="0.35" stop-color="#A9637A"/><stop offset="1" stop-color="#5E2F48"/>
-        </linearGradient>
-        <linearGradient id="ledge" gradientUnits="userSpaceOnUse" x1="0" y1="586" x2="0" y2="1000">
-          <stop offset="0" stop-color="#E6F0FF"/>
-          <stop offset="0.05" stop-color="#A9C2EE"/>
-          <stop offset="0.18" stop-color="#4F6DB0"/>
-          <stop offset="0.45" stop-color="#23356E"/>
-          <stop offset="1" stop-color="#0A1028"/>
+        <linearGradient id="ledge" gradientUnits="userSpaceOnUse" x1="0" y1="660" x2="0" y2="1000">
+          <stop offset="0" stop-color="#FFFFFF"/>
+          <stop offset="0.5" stop-color="#F6F9FF"/>
+          <stop offset="1" stop-color="#E9F0FC"/>
         </linearGradient>
       </defs>
-      <!-- main ledge the door stands on -->
-      <path fill="url(#ledge)" d="M0 642 C 110 632, 200 614, 300 604 L 380 597 C 430 590, 462 586, 500 586 C 544 586, 580 589, 630 596 L 720 604 C 820 613, 900 627, 1000 638 L1000 1000 L0 1000 Z"/>
-      <path fill="none" stroke="#F2F8FF" stroke-opacity="0.45" stroke-width="1.2" vector-effect="non-scaling-stroke" d="M0 642 C 110 632, 200 614, 300 604 L 380 597 C 430 590, 462 586, 500 586 C 544 586, 580 589, 630 596 L 720 604 C 820 613, 900 627, 1000 638"/>
-      <g id="strata"></g>
-</svg>
+      <path id="landFill" fill="url(#ledge)" d="M0 660 L1000 660 L1000 1000 L0 1000 Z"/>
+      <path id="landRim" fill="none" stroke="#F2F8FF" stroke-opacity="0.45" stroke-width="1.2" vector-effect="non-scaling-stroke" d="M0 660 L1000 660"/>
+    </svg>
     <div class="spill" aria-hidden="true"></div>
     <div class="door" aria-hidden="true"></div>
     <div class="motes" id="motes" aria-hidden="true"></div>
@@ -291,71 +264,22 @@
     }, starG);
   }
 
-  /* ---- Glittery white and blue grass ---- */
-  var strataG = document.getElementById('strata');
-  var blades = [];
-  function ledgeTop(x) { var d = (x - 500) / 500; return 586 + d * d * 54; }
-  var pinks = ['#FFFFFF', '#F2F8FF', '#DCEAFF', '#BCD5FF', '#94B6F5', '#6C93E6'];
-  var groups = ['a', 'b', 'c'].map(function (k) { return el('g', { 'class': 'sway ' + k }, strataG); });
-  for (var i = 0; i < 950; i++) {
-    var depth = i < 330 ? rand() * 0.22 : Math.pow(rand(), 0.7);
-    var x = rand() * 1040 - 20;
-    var y = ledgeTop(x) + 2 + depth * (1000 - ledgeTop(x));
-    var h = 8 + depth * 90;
-    var lean = h * (1 + rand() * 0.8);
-    var p = el('path', {
-      d: 'M' + x.toFixed(1) + ' ' + y.toFixed(1) +
-         ' q' + (lean * 0.35).toFixed(1) + ' ' + (-h * 0.7).toFixed(1) + ' ' + lean.toFixed(1) + ' ' + (-h * 0.55).toFixed(1),
-      fill: 'none',
-      stroke: pinks[Math.floor(rand() * pinks.length)],
-      'stroke-width': (0.6 + depth * 2.2).toFixed(2),
-      'stroke-linecap': 'round',
-      'vector-effect': 'non-scaling-stroke',
-      opacity: (0.3 + depth * 0.6).toFixed(2)
-    }, groups[i % 3]);
-    p._box = { x1: x, x2: x + lean, y1: y - h * 0.75, y2: y };
-    // sample points along the curve so we can test the blade itself, not its bounding box
-    p._pts = [];
-    for (var k = 0; k <= 10; k++) {
-      var t = k / 10, cx1 = x + lean * 0.35, cy1 = y - h * 0.7, ex = x + lean, ey = y - h * 0.55;
-      p._pts.push([(1 - t) * (1 - t) * x + 2 * (1 - t) * t * cx1 + t * t * ex,
-                   (1 - t) * (1 - t) * y + 2 * (1 - t) * t * cy1 + t * t * ey]);
-    }
-    blades.push(p);
+  /* ---- Horizon: 66% down, but always just above the headline so the text stays on the land ---- */
+  var heroText = document.querySelector('.hero-copy p');
+  function placeHorizon() {
+    var vh = window.innerHeight;
+    var r = document.createRange(); r.selectNodeContents(heroText);
+    var top = r.getClientRects()[0].top;
+    var hy = Math.min(vh * 0.66, top - 14);
+    var y = (hy / vh * 1000).toFixed(1);
+    document.getElementById('landFill').setAttribute('d', 'M0 ' + y + ' L1000 ' + y + ' L1000 1000 L0 1000 Z');
+    document.getElementById('landRim').setAttribute('d', 'M0 ' + y + ' L1000 ' + y);
+    document.getElementById('ledge').setAttribute('y1', y);
+    document.querySelector('.spill').style.top = (hy + 12) + 'px';
   }
-
-  // glitter: tiny sparkles and a few cross-shaped glints scattered through the grass
-  var glitterG = el('g', {}, strataG);
-  for (var gl = 0; gl < 420; gl++) {
-    var gd = Math.pow(rand(), 0.8);
-    var gx = rand() * 1000;
-    var gy = ledgeTop(gx) + 3 + gd * (1000 - ledgeTop(gx));
-    var cross = rand() > 0.9;
-    var col = rand() > 0.45 ? '#FFFFFF' : '#BFD8FF';
-    var dur = (1.2 + rand() * 2.4).toFixed(2) + 's';
-    var delay = (-rand() * 3).toFixed(2) + 's';
-    var sp;
-    if (cross) {
-      var r = 3 + gd * 7;
-      sp = el('path', {
-        d: 'M' + gx.toFixed(1) + ' ' + (gy - r).toFixed(1) + ' L' + gx.toFixed(1) + ' ' + (gy + r).toFixed(1) +
-           ' M' + (gx - r * 0.6).toFixed(1) + ' ' + gy.toFixed(1) + ' L' + (gx + r * 0.6).toFixed(1) + ' ' + gy.toFixed(1),
-        stroke: col, 'stroke-width': (1 + gd).toFixed(2), 'stroke-linecap': 'round',
-        'vector-effect': 'non-scaling-stroke', 'class': 'glint',
-        style: 'animation-duration:' + dur + ';animation-delay:' + delay
-      }, glitterG);
-      sp._box = { x1: gx - r, x2: gx + r, y1: gy - r, y2: gy + r };
-    } else {
-      var rr = 0.35 + gd * 1.1;
-      sp = el('ellipse', {
-        cx: gx.toFixed(1), cy: gy.toFixed(1), rx: (rr * 0.62).toFixed(2), ry: rr.toFixed(2),
-        fill: col, 'class': 'glint',
-        style: 'animation-duration:' + dur + ';animation-delay:' + delay
-      }, glitterG);
-      sp._box = { x1: gx - 2, x2: gx + 2, y1: gy - 2, y2: gy + 2 };
-    }
-    blades.push(sp);
-  }
+  placeHorizon();
+  window.addEventListener('resize', placeHorizon);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeHorizon);
 
   /* ---- Bioluminescent motes ---- */
   var motes = document.getElementById('motes');
@@ -368,39 +292,6 @@
     motes.appendChild(s);
   }
 
-  /* ---- Keep grass clear of any text ---- */
-  var textEls = document.querySelectorAll('.wordmark, .hero-copy p, .legal .copy, .cue');
-  function clearText() {
-    var vw = window.innerWidth, vh = window.innerHeight, pad = 10;
-    var zones = [];
-    textEls.forEach(function (el) {
-      // one zone per line of text, so grass can grow right up to short lines
-      var r = document.createRange(); r.selectNodeContents(el);
-      Array.prototype.forEach.call(r.getClientRects(), function (b) {
-        if (!b.width) return;
-        zones.push({
-          x1: (b.left - pad) / vw * 1000, x2: (b.right + pad) / vw * 1000,
-          y1: (b.top - pad * 0.5) / vh * 1000, y2: (b.bottom + pad * 0.5) / vh * 1000
-        });
-      });
-    });
-    function inZone(px, py) {
-      return zones.some(function (z) { return px > z.x1 && px < z.x2 && py > z.y1 && py < z.y2; });
-    }
-    blades.forEach(function (p) {
-      var hit;
-      if (p._pts) {
-        hit = p._pts.some(function (pt) { return inZone(pt[0], pt[1]); });
-      } else {
-        var bx = p._box;
-        hit = zones.some(function (z) { return bx.x2 > z.x1 && bx.x1 < z.x2 && bx.y2 > z.y1 && bx.y1 < z.y2; });
-      }
-      p.style.display = hit ? 'none' : '';
-    });
-  }
-  clearText();
-  window.addEventListener('resize', clearText);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(clearText);
 })();
 </script>
 </body>
