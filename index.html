@@ -16,7 +16,7 @@
     --ink: #13235E;        /* logo navy */
     --night: #040C1F;      /* hero sky */
     --paper: #FBFBF9;
-    --sage: #8A9A6B;       /* windswept grass */
+    --frost: #BCD5FF;      /* glittery blue grass */
     --poppy: #E4683F;      /* coral blooms */
     --rose: #E7A6BE;
     --lilac: #C3A3D6;
@@ -90,22 +90,28 @@
     width: 100%;
     height: 100%;
   }
+  .sky {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .twinkle { animation: twinkle 4s ease-in-out infinite alternate; }
+  .glint { animation: glint 2s ease-in-out infinite alternate; filter: drop-shadow(0 0 2px rgba(220, 235, 255, 0.9)); }
+  @keyframes glint { 0% { opacity: 0.1; } 70% { opacity: 0.5; } 100% { opacity: 1; } }
+  @keyframes twinkle { from { opacity: 0.25; } to { opacity: 1; } }
   .sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 9s ease-in-out infinite alternate; }
   .sway.b { animation-duration: 12s; animation-delay: -4s; }
   .sway.c { animation-duration: 7s; animation-delay: -2s; }
-  @keyframes sway {
-    from { transform: skewX(-2deg); }
-    to   { transform: skewX(3.5deg); }
-  }
-
+  @keyframes sway { from { transform: skewX(-2deg); } to { transform: skewX(3.5deg); } }
   .door {
-    --dh: clamp(110px, 17vh, 180px);
+    --dh: clamp(140px, 22vh, 235px);
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: calc(58.6% - var(--dh) + 0.9vh + 4px); /* base sits slightly into the rock so there is no gap */
     width: calc(var(--dh) * 0.48);
     height: var(--dh);
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     background:
       radial-gradient(80% 60% at 50% 60%, #FFFFFF 0%, var(--glow) 55%, #F6D7B4 100%);
     box-shadow:
@@ -129,25 +135,13 @@
   .spill {
     position: absolute;
     left: 50%;
-    top: calc(50% + clamp(55px, 8.5vh, 90px));
+    top: 58.6%;
     width: clamp(140px, 22vw, 320px);
     height: 40px;
     transform: translate(-50%, -50%);
     background: radial-gradient(closest-side, rgba(255, 228, 190, 0.55), transparent);
     filter: blur(6px);
   }
-
-  .bloom {
-    position: absolute;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(255, 150, 110, 0.9) 0 2px, transparent 3px) 0 0 / 9px 11px,
-      radial-gradient(closest-side, rgba(228, 104, 63, 0.95), rgba(196, 70, 40, 0.6) 60%, transparent);
-    filter: blur(1.5px);
-  }
-  .bloom.one { width: 11vmin; height: 8vmin; left: -5vmin; bottom: -4vmin; }
-  .bloom.two { width: 13vmin; height: 10vmin; right: -3vmin; top: 57%; opacity: 0.85; }
-  .bloom.three { width: 9vmin; height: 8vmin; right: 24%; bottom: -3vmin; opacity: 0.7; }
 
   .motes span {
     position: absolute;
@@ -216,29 +210,43 @@
     .hero-copy { bottom: calc(env(safe-area-inset-bottom, 0px) + 6rem); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sway, .motes span { animation: none !important; }
+    .sway, .motes span, .twinkle, .glint { animation: none !important; }
   }
 </style>
 </head>
 <body>
 <main class="stage">
   <div class="world">
+    <svg class="sky" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <defs>
+        <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+      </defs>
+      <ellipse cx="760" cy="300" rx="900" ry="120" fill="#B9A2E0" opacity="0.10" filter="url(#soft)" transform="rotate(-18 760 300)"/>
+      <g id="stars"></g>
+    </svg>
     <svg class="land" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
       <defs>
-        <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#2E3A2A"/>
-          <stop offset="0.35" stop-color="#1A2318"/>
-          <stop offset="1" stop-color="#05080A"/>
+        <linearGradient id="farRock" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9C6E8C"/><stop offset="1" stop-color="#4E3554"/>
+        </linearGradient>
+        <linearGradient id="midRock" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#D99A9F"/><stop offset="0.35" stop-color="#A9637A"/><stop offset="1" stop-color="#5E2F48"/>
+        </linearGradient>
+        <linearGradient id="ledge" gradientUnits="userSpaceOnUse" x1="0" y1="586" x2="0" y2="1000">
+          <stop offset="0" stop-color="#E6F0FF"/>
+          <stop offset="0.05" stop-color="#A9C2EE"/>
+          <stop offset="0.18" stop-color="#4F6DB0"/>
+          <stop offset="0.45" stop-color="#23356E"/>
+          <stop offset="1" stop-color="#0A1028"/>
         </linearGradient>
       </defs>
-      <path d="M0 625 C 260 592, 420 576, 500 578 C 620 576, 760 598, 1000 632 L1000 1000 L0 1000 Z" fill="url(#hill)"/>
-      <g id="grass"></g>
-    </svg>
+      <!-- main ledge the door stands on -->
+      <path fill="url(#ledge)" d="M0 642 C 110 632, 200 614, 300 604 L 380 597 C 430 590, 462 586, 500 586 C 544 586, 580 589, 630 596 L 720 604 C 820 613, 900 627, 1000 638 L1000 1000 L0 1000 Z"/>
+      <path fill="none" stroke="#F2F8FF" stroke-opacity="0.45" stroke-width="1.2" vector-effect="non-scaling-stroke" d="M0 642 C 110 632, 200 614, 300 604 L 380 597 C 430 590, 462 586, 500 586 C 544 586, 580 589, 630 596 L 720 604 C 820 613, 900 627, 1000 638"/>
+      <g id="strata"></g>
+</svg>
     <div class="spill" aria-hidden="true"></div>
     <div class="door" aria-hidden="true"></div>
-    <div class="bloom one" aria-hidden="true"></div>
-    <div class="bloom two" aria-hidden="true"></div>
-    <div class="bloom three" aria-hidden="true"></div>
     <div class="motes" id="motes" aria-hidden="true"></div>
   </div>
 
@@ -258,39 +266,95 @@
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- Windswept grass ---- */
-  var g = document.getElementById('grass');
   var NS = 'http://www.w3.org/2000/svg';
-  var greens = ['#8A9A6B', '#9FAE7E', '#6F7F53', '#B5BE8F', '#5D6B45'];
-  var groups = ['a', 'b', 'c'].map(function (k) {
-    var el = document.createElementNS(NS, 'g');
-    el.setAttribute('class', 'sway ' + k);
-    g.appendChild(el);
-    return el;
-  });
   var seed = 7;
   function rand() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  /* ---- Stars ---- */
+  var starG = document.getElementById('stars');
+  for (var st = 0; st < 340; st++) {
+    var sr = rand();
+    el('circle', {
+      cx: (rand() * 1600).toFixed(1), cy: (rand() * 640).toFixed(1),
+      r: (sr > 0.97 ? 1.8 : sr > 0.85 ? 1.1 : 0.6).toFixed(1),
+      fill: sr > 0.93 ? '#FFE9C9' : '#E6ECFF',
+      opacity: (0.35 + rand() * 0.6).toFixed(2),
+      'class': sr > 0.9 ? 'twinkle' : '',
+      style: 'animation-delay:' + (-rand() * 4).toFixed(2) + 's'
+    }, starG);
+  }
+
+  /* ---- Glittery white and blue grass ---- */
+  var strataG = document.getElementById('strata');
   var blades = [];
-  for (var i = 0; i < 520; i++) {
-    var depth = Math.pow(rand(), 0.7);           // more blades toward the front
-    var y = 590 + depth * 420;
-    var hillY = 578 + Math.pow(Math.abs(((i * 37) % 1000) - 500) / 500, 2) * 50;
+  function ledgeTop(x) { var d = (x - 500) / 500; return 586 + d * d * 54; }
+  var pinks = ['#FFFFFF', '#F2F8FF', '#DCEAFF', '#BCD5FF', '#94B6F5', '#6C93E6'];
+  var groups = ['a', 'b', 'c'].map(function (k) { return el('g', { 'class': 'sway ' + k }, strataG); });
+  for (var i = 0; i < 950; i++) {
+    var depth = i < 330 ? rand() * 0.22 : Math.pow(rand(), 0.7);
     var x = rand() * 1040 - 20;
-    if (y < hillY) y = hillY + rand() * 10;
-    var h = 10 + depth * 90;
+    var y = ledgeTop(x) + 2 + depth * (1000 - ledgeTop(x));
+    var h = 8 + depth * 90;
     var lean = h * (1 + rand() * 0.8);
-    var p = document.createElementNS(NS, 'path');
-    p.setAttribute('d', 'M' + x.toFixed(1) + ' ' + y.toFixed(1) +
-      ' q' + (lean * 0.35).toFixed(1) + ' ' + (-h * 0.7).toFixed(1) + ' ' + lean.toFixed(1) + ' ' + (-h * 0.55).toFixed(1));
-    p.setAttribute('fill', 'none');
-    p.setAttribute('stroke', greens[Math.floor(rand() * greens.length)]);
-    p.setAttribute('stroke-width', (0.6 + depth * 2.2).toFixed(2));
-    p.setAttribute('stroke-linecap', 'round');
-    p.setAttribute('vector-effect', 'non-scaling-stroke');
-    p.setAttribute('opacity', (0.25 + depth * 0.65).toFixed(2));
-    p._box = { x1: Math.min(x, x + lean), x2: Math.max(x, x + lean), y1: y - h * 0.75, y2: y };
+    var p = el('path', {
+      d: 'M' + x.toFixed(1) + ' ' + y.toFixed(1) +
+         ' q' + (lean * 0.35).toFixed(1) + ' ' + (-h * 0.7).toFixed(1) + ' ' + lean.toFixed(1) + ' ' + (-h * 0.55).toFixed(1),
+      fill: 'none',
+      stroke: pinks[Math.floor(rand() * pinks.length)],
+      'stroke-width': (0.6 + depth * 2.2).toFixed(2),
+      'stroke-linecap': 'round',
+      'vector-effect': 'non-scaling-stroke',
+      opacity: (0.3 + depth * 0.6).toFixed(2)
+    }, groups[i % 3]);
+    p._box = { x1: x, x2: x + lean, y1: y - h * 0.75, y2: y };
+    // sample points along the curve so we can test the blade itself, not its bounding box
+    p._pts = [];
+    for (var k = 0; k <= 10; k++) {
+      var t = k / 10, cx1 = x + lean * 0.35, cy1 = y - h * 0.7, ex = x + lean, ey = y - h * 0.55;
+      p._pts.push([(1 - t) * (1 - t) * x + 2 * (1 - t) * t * cx1 + t * t * ex,
+                   (1 - t) * (1 - t) * y + 2 * (1 - t) * t * cy1 + t * t * ey]);
+    }
     blades.push(p);
-    groups[i % 3].appendChild(p);
+  }
+
+  // glitter: tiny sparkles and a few cross-shaped glints scattered through the grass
+  var glitterG = el('g', {}, strataG);
+  for (var gl = 0; gl < 420; gl++) {
+    var gd = Math.pow(rand(), 0.8);
+    var gx = rand() * 1000;
+    var gy = ledgeTop(gx) + 3 + gd * (1000 - ledgeTop(gx));
+    var cross = rand() > 0.9;
+    var col = rand() > 0.45 ? '#FFFFFF' : '#BFD8FF';
+    var dur = (1.2 + rand() * 2.4).toFixed(2) + 's';
+    var delay = (-rand() * 3).toFixed(2) + 's';
+    var sp;
+    if (cross) {
+      var r = 3 + gd * 7;
+      sp = el('path', {
+        d: 'M' + gx.toFixed(1) + ' ' + (gy - r).toFixed(1) + ' L' + gx.toFixed(1) + ' ' + (gy + r).toFixed(1) +
+           ' M' + (gx - r * 0.6).toFixed(1) + ' ' + gy.toFixed(1) + ' L' + (gx + r * 0.6).toFixed(1) + ' ' + gy.toFixed(1),
+        stroke: col, 'stroke-width': (1 + gd).toFixed(2), 'stroke-linecap': 'round',
+        'vector-effect': 'non-scaling-stroke', 'class': 'glint',
+        style: 'animation-duration:' + dur + ';animation-delay:' + delay
+      }, glitterG);
+      sp._box = { x1: gx - r, x2: gx + r, y1: gy - r, y2: gy + r };
+    } else {
+      var rr = 0.35 + gd * 1.1;
+      sp = el('ellipse', {
+        cx: gx.toFixed(1), cy: gy.toFixed(1), rx: (rr * 0.62).toFixed(2), ry: rr.toFixed(2),
+        fill: col, 'class': 'glint',
+        style: 'animation-duration:' + dur + ';animation-delay:' + delay
+      }, glitterG);
+      sp._box = { x1: gx - 2, x2: gx + 2, y1: gy - 2, y2: gy + 2 };
+    }
+    blades.push(sp);
   }
 
   /* ---- Bioluminescent motes ---- */
@@ -307,21 +371,30 @@
   /* ---- Keep grass clear of any text ---- */
   var textEls = document.querySelectorAll('.wordmark, .hero-copy p, .legal .copy, .cue');
   function clearText() {
-    var vw = window.innerWidth, vh = window.innerHeight, pad = 18;
+    var vw = window.innerWidth, vh = window.innerHeight, pad = 10;
     var zones = [];
     textEls.forEach(function (el) {
-      // measure the text itself, not the full-width container
+      // one zone per line of text, so grass can grow right up to short lines
       var r = document.createRange(); r.selectNodeContents(el);
-      var b = r.getBoundingClientRect();
-      zones.push({
-        x1: (b.left - pad) / vw * 1000, x2: (b.right + pad) / vw * 1000,
-        y1: (b.top - pad) / vh * 1000,  y2: (b.bottom + pad) / vh * 1000
+      Array.prototype.forEach.call(r.getClientRects(), function (b) {
+        if (!b.width) return;
+        zones.push({
+          x1: (b.left - pad) / vw * 1000, x2: (b.right + pad) / vw * 1000,
+          y1: (b.top - pad * 0.5) / vh * 1000, y2: (b.bottom + pad * 0.5) / vh * 1000
+        });
       });
     });
+    function inZone(px, py) {
+      return zones.some(function (z) { return px > z.x1 && px < z.x2 && py > z.y1 && py < z.y2; });
+    }
     blades.forEach(function (p) {
-      var hit = zones.some(function (z) {
-        return p._box.x2 > z.x1 && p._box.x1 < z.x2 && p._box.y2 > z.y1 && p._box.y1 < z.y2;
-      });
+      var hit;
+      if (p._pts) {
+        hit = p._pts.some(function (pt) { return inZone(pt[0], pt[1]); });
+      } else {
+        var bx = p._box;
+        hit = zones.some(function (z) { return bx.x2 > z.x1 && bx.x1 < z.x2 && bx.y2 > z.y1 && bx.y1 < z.y2; });
+      }
       p.style.display = hit ? 'none' : '';
     });
   }
